@@ -109,36 +109,7 @@ export const deletePost = async (req: Request, res: Response) => {
 // List All Posts
 export const listPosts = async (req: Request, res: Response) => {
 
-    const skip = parseInt(req.query.skip as string, 10) || 0;
-    const take = parseInt(req.query.take as string, 10) || 5;
-    const search = req.query.search as string || '';
-
-    const count = await prismaClient.post.count({
-        where: {
-            OR: [
-                { title: { contains: search, mode: 'insensitive' } },
-                { content: { contains: search, mode: 'insensitive' } }
-            ]
-        }
-    });
-
     const posts = await prismaClient.post.findMany({
-        where: {
-            OR: [
-                { title: { contains: search, mode: 'insensitive' } },
-                { content: { contains: search, mode: 'insensitive' } }
-            ]
-        },
-        skip: skip,
-        take: take,
     });
-
-
-    res.json({
-        count,
-        data: posts,
-        skip,
-        take
-    })
-
+    res.json(posts)
 }
