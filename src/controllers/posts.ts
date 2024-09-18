@@ -110,6 +110,9 @@ export const deletePost = async (req: Request, res: Response) => {
 export const listPosts = async (req: Request, res: Response) => {
 
     const posts = await prismaClient.post.findMany({
+        orderBy: {
+            createdAt: 'desc'
+        }
     });
     res.json(posts)
 }
